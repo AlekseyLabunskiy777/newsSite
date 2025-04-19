@@ -3,9 +3,15 @@
 namespace utils;
 
 use Exception;
+use models\News;
 
 class ViewUtils
 {
+    private News $newsModel;
+    public function __construct()
+    {
+        $this->newsModel = new News();
+    }
     /**
      * Відображає шаблон із переданими даними
      * @param string $viewPath Шлях до файлу вигляду (наприклад, 'news/index')
@@ -42,12 +48,19 @@ class ViewUtils
         return ob_get_clean();
     }
 
+
     /**
-     * Екранування рядка для безпечного виведення
-     * @param string $string
-     * @return string
+     * Пагінація
+     * @param $page
+     * @return array[]
      */
-    public static function escape($string) {
-        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    public  function pagination($page): array
+    {
+        $total_news = $this->newsModel->getTotalNewsCount();
+        $offset = ($page - 1) * COUNT_NEWS_ON_PAGE_LIMIT;
+        $total_pages = ceil($total_news / COUNT_NEWS_ON_PAGE_LIMIT);
+
+        return ['page' => $page, 'total_pages' => $total_pages, 'offset' => $offset];
     }
+
 }

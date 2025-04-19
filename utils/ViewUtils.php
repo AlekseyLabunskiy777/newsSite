@@ -13,18 +13,32 @@ class ViewUtils
      * @return string Вміст відрендереного шаблону
      * @throws Exception Якщо шаблон не знайдено
      */
-    public function render(string $viewPath, array $data = []): string
-    {
-        $file = 'views/' . str_replace('/', DIRECTORY_SEPARATOR, $viewPath) . '.php';
+    public function render($viewPath, $data = [], $layout = 'layouts/main') {
+        // Формуємо шлях до файлу вьюшки
+        $viewFile = 'views/' . str_replace('/', DIRECTORY_SEPARATOR, $viewPath) . '.php';
 
-        if (!file_exists($file)) {
-            throw new Exception("Шаблон '$viewPath' не знайдено за шляхом: $file");
+        if (!file_exists($viewFile)) {
+            throw new Exception("Шаблон '$viewPath' не знайдено за шляхом: $viewFile");
         }
 
+        // Витягуємо дані
         extract($data, EXTR_SKIP);
-        ob_start();
-        require $file;
 
+        // Рендеримо вміст
+        ob_start();
+        require $viewFile;
+        $content = ob_get_clean();
+
+        // Формуємо шлях до головного шаблону
+        $layoutFile = 'views/' . str_replace('/', DIRECTORY_SEPARATOR, $layout) . '.php';
+
+        if (!file_exists($layoutFile)) {
+            throw new Exception("Головний шаблон '$layout' не знайдено за шляхом: $layoutFile");
+        }
+
+        // Рендеримо головний шаблон із вмістом
+        ob_start();
+        require $layoutFile;
         return ob_get_clean();
     }
 

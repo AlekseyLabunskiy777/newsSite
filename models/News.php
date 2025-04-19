@@ -24,4 +24,11 @@ class News
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getOne($id) {
+        $stmt = $this->pdo->prepare("SELECT * FROM news WHERE id = ?");
+        $stmt->bindValue(1, $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

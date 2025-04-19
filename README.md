@@ -19,6 +19,7 @@
          `content` TEXT NOT NULL,
          `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
        );
+
     14. INSERT INTO `news` (title, short_description, content) 
     -> VALUES 
     -> ('Перша новина', 'Короткий опис першої новини', 'Повний текст першої новини.'),

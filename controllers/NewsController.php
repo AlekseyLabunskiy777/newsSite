@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Exception;
 use models\News;
 use utils\ViewUtils;
 
@@ -19,12 +20,19 @@ class NewsController
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function actionIndex()
     {
         $news = $this->newsModel->getAll();
 
         echo $this->view->render('news/index',['news' => $news]);
+    }
+
+    public function actionView(int $id)
+    {
+        $news = $this->newsModel->getOne($id);
+
+        echo $this->view->render('news/view',['news' => $news]);
     }
 }

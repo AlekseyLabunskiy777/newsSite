@@ -13,6 +13,14 @@ switch ($route) {
         $controller = new NewsController();
         $controller->actionIndex();
         break;
+    case 'view':
+        if (isset($_GET['id'])) {
+            $controller = new NewsController();
+            $controller->actionView($_GET['id']);
+        } else {
+            die("Помилка! Параметр id не передано.");
+        }
+        break;
     default:
         die("404: Сторінку не знайдено.");
 }
